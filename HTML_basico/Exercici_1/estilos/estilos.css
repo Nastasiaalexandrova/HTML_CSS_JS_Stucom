@@ -1,0 +1,21 @@
+*{
+    margin-left: 100px;
+    margin-right: 100px;
+    /* text-align: center; */
+    
+}
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.espacio{
+    padding-left: 30px;
+}
+#segundo{
+    padding-left: 30px;
+}
+.fin{
+    padding-left: 20px;
+}
+#small{
+    font-size: 12px;
+}
