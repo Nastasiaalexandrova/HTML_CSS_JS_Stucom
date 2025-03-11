@@ -1,0 +1,134 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    color: black;
+    font-family: "Lato", Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+:root {
+    --breakpoint: 1200px;
+    --color-clar: rgb(245, 245, 245);
+    --color-secundari: #a46d3c;
+    --color-secundari50x100: hsla(28, 46%, 44%, 0.50);
+    --font-titols: "Lexend", Arial, Helvetica, sans-serif;
+}
+
+
+body {
+    background-color: var(--color-clar);
+}
+
+.breakpoint {
+    max-width: var(--breakpoint);
+    margin: 0 auto;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-secundari);
+}
+
+h1{
+    font-family: var(--font-titols);
+    font-size: 2.5rem;
+    font-weight: 200;
+    text-shadow: 4px 4px 2px rgb(128, 128, 128, 0.25);
+
+    span{
+        font-size: inherit;
+        font-family: inherit;
+        color: var(--color-secundari);
+        font-weight: 400;
+    }
+}
+
+header > div:first-child{
+    /* border: 2px solid black; */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    img{
+        width: 200px;
+    }
+}
+
+header > div:last-child{
+    /* border: 2px solid black; */
+    display: flex;
+    justify-content: right;
+
+    img{
+        width: 50px;
+    }
+}
+
+ul.breakpoint{
+    display: flex;
+    justify-content: space-between;
+
+    list-style: none;
+    padding: 20px;
+    border-bottom: 2px solid rgb(128, 128, 128);
+    box-shadow: 5px 5px 5px rgb(128, 128, 128);
+}
+
+/* nav{
+    box-shadow: 5px 5px 5px rgb(128, 128, 128);
+} */
+
+section.breakpoint{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+
+    article{
+        border: 5px solid var(--color-secundari);
+    }
+
+    img{
+        width: 100%;
+    }
+
+    h2{
+        color: var(--color-secundari);
+        font-family: var(--font-titols);
+        font-weight: 400;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+    p{
+        padding: 1rem;
+    }
+
+    a{
+        color: white;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        margin: 2rem;
+        padding: 5px 10px;
+        background-color: var(--color-secundari);
+        border: 2px solid white;
+    
+        &:hover{
+            border: 2px solid var(--color-secundari);
+            color: var(--color-secundari);
+            background-color: white;
+
+        }
+    }
+    @media (max-width: 1200px)
+}
+
+   
+
