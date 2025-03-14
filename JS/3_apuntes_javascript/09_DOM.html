@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+</head>
+<body>
+
+    <h1 onclick="cambiarH1()">Titulo1</h1>
+    <h2>Titulo2</h2>
+    <h3>Titulos3</h3>
+    
+    <!-- p*5{$} -->
+    <p>1</p>
+    <p>2</p>
+    <p id="parrafo_3">3</p>
+    <p class="newBackground">4</p>
+    <p class="newBackground">5</p>
+    <div>
+        <h2>Estoy dentro del DIV</h2>
+        <p>Soy un parrafo dentro de DIV</p>
+    </div>
+
+    <script>
+        let h1 = document.querySelector("h1")
+        console.log(h1.textContent);
+        // h1.textContent = "He cambiado el titulo <span style = 'color_red'> principal </span>"
+        h1.innerHTML = "He cambiado el titulo <span style = 'color:red'> principal </span>"
+
+        let cambio = "white"
+        function cambiarH1() {
+            
+            if (cambio == "white"){
+                h1.style.backgroundColor = "darkblue"
+                h1.style.color = "white"
+                cambio = "violet"
+            } else if (cambio == "violet") {
+                h1.style.backgroundColor = "yellow"
+                h1.style.color = "violet"
+                cambio = "otro"
+            } else {
+
+                h1.style.backgroundColor = "black"
+                h1.style.color = "green"
+                cambio = "white"
+            }
+            
+        }
+
+        //////////////////////////////////////////////
+        // const h2_bis = document.getElementsByTagName("h2")
+        const h2 = document.querySelector("h2")
+        h2.onclick = () => {
+            h2.style.fontFamily = "Arial"
+            h2.style.fontSize = "36px"
+        }
+        
+
+
+        ///////////////////////////////////
+        const h3 = document.querySelector("h3")
+        h3.addEventListener("click", () => {
+            h2.innerText = "He cambiado el H2 desde el H3"
+            h3.style.color = "darkgreen"
+        })
+
+        //////////////////////////
+        //SELECCION MULTIPLE
+        const parrafos = document.querySelectorAll("p")
+
+        for (let i=0; i < parrafos.length; i++) {
+            parrafos[i].addEventListener("click", () => {
+                parrafos[i].style.border = "2px solid orange"
+                parrafos[i].style.display = "inline"
+            })
+        }
+
+
+
+        const nb = document.querySelectorAll(".newBackground")
+        for (let i=0; i<nb.length; i++) {
+            nb[i].addEventListener("mouseover", () => {
+
+            })
+        }
+
+        const div = document.q
+
+    </script>
+</body>
+</html>
