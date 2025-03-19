@@ -34,7 +34,10 @@ nombreCorregido
 let sumar3 = (num1, num2) => {
     return num1 + num2
 }
-console.log(sumar(3, 4));
+console.log(sumar3(3, 4));
+
+let sumar4 = (num1, num2) => num1 + num2
+console.log(sumar4(5, 7));
 
 let sumar5 = num1 => num1*num1
 console.log(sumar5(3));

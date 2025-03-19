@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etiquetas de formularios</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        main{
+        max-width: 80%;
+        margin: 5% auto;
+        }
+        div{
+            margin: 2rem 1rem;
+        }
+        button, input[type="button"]{
+            padding: 5px 10px;
+        }
+        input{
+            padding: 5px 10px;
+        }
+        label{
+            display: block;
+            margin-top: 1rem;
+        }
+
+        input[type="radio"] + label{    /*para que el label no se muestre en block*/
+            display: inline;
+            margin-left: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <main>
+        <h1>Etiquetas de formularios</h1>
+        <form action="#" id="myForm">    <!--# pagina donde queremos que se manden los datos, placeholder-->
+
+        <fieldset>
+            <legend>Etiquetas más habituales</legend>
+            <div>
+                <label for="nombre">Nombre:</label>    <!--dentro del for id que corresponda-->
+                <input type="text" 
+                name="nombre" 
+                id="nombre" 
+                placeholder="Escribe aqui tu nombre"
+                autofocus
+                required
+                minlength="5"
+                maxlength="10"
+                pattern="[A-Za-z]{5,10}"
+                title="escribe tu nombre (5 caracteres minimo y 10maximo)"
+                > <!--name->clave cuando se manda a la nube (si obj),
+                autofocus atributo booleano si atributo es true-al cargar la pagina el cursos focusea
+                required atributo booleano, atributo requerido si no esta el atributo no te lo deja enviar
+                minlength="5" - minimo tamaño que tiene que tener el texto
+                maxlength="10" - maximo tamaño del texto
+                pattern="[A-Za-z]{5,10}" - para escribir expresiones regulares y limitar el input
+                title - al pasar cursor por encima
+                value - texto escrito predefinido (valor por defecto)-->   
+                <label for="password">Contraseña:</label> 
+                <input type="password" name="password" id="password">   <!--lo que se escriba por defecto no se muestra-->
+                <label for="number">Edad</label>
+                <input type="number" name="number" id="number" min="0" max="100">
+                
+                <input type="hidden" name="">   <!--no se muestra pero es capaz de enviar datos al servidor sin que el usuario se entere-->
+            </div>
+            <div>
+                <input type="button" value="Enviar por Id" id="Enviar_1">    <!--aqui solo se puede poner texto, en button puedes poner cualquier cosa-->
+                <!-- <button type="submit">Enviar por form</button> hacen lo mismo, en button se pueden poner imagenes o iconos, type submit en vez de button -->
+                <div>
+                    <h2>Buttons</h2>
+                    <button type="submit">Enviar por Form</button>
+                    <button type="reset">Reset</button>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Datos personales</legend>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">    <!--lleva de serie una minivalidacion para saber si es un correo valido-->
+            <label for="tel">Teléfono</label>
+            <input type="tel" name="tel" id="tel">
+            <label for="url">URL</label>
+            <input type="url" name="url" id="url">
+        </fieldset>
+
+        <fieldset>
+            <legend>Radio buttons</legend>
+            <input type="radio" name="colores" id="rojo" checked> <label for="rojo">Color Rojo</label>  <!--checked - valor por defecto-->
+            <input type="radio" name="colores" id="azul"> <label for="azul">Color Azul</label>  <!--o uno u otro-->
+            <input type="radio" name="colores" id="verde"> <label for="verde">Color Verde</label>    <!--el name tiene que ser el mismo en los 3, asi sabe que tiene que elegir SOLO UNO-->
+
+        </fieldset>
+
+        </form>
+    </main>
+        <div id="resultadoFormulario""></div>
+    <script>
+
+        //FORMA 1 DE OBTENER DATOS DE UN FORMULARIO, POR ID , si hay muchos elementos no es práctico
+        //nodo del div donde escribiremos el resultado
+        const resultadoFormulario = document.getElementById("resultadoFormulario")
+        //nodo del input button
+        const enviar1 = document.getElementById("Enviar_1") //este sistema de id no necesita # delant porque ya le hemos dicho que es un id
+        //nodo de input nombre
+        const nombre =document.getElementById("nombre")
+        const password = document.getElementById("password")
+        enviar1.addEventListener("click",()=>{
+            let valorDelInput = nombre.value
+            let valorDelPassword = password.value
+            resultadoFormulario.textContent = `${valorDelInput} ${valorDelPassword}`
+        })
+
+        resultadoFormulario.textContent=""
+        //FORMA 2
+        const botonEnviar = document.querySelector("#myForm")
+        myForm.addEventListener("submit",(event)=>{  //evento ya no click sino submit, boton tmbn type submit
+            // alert(myForm["nombre"].value)
+            event.preventDefault()  //para que no se borren los datos (no se recargue la pagina) despues del submit
+            resultadoFormulario.textContent += myForm["nombre"].value + " "//estamos encadenando texto, para que no queden pegados
+            resultadoFormulario.textContent += myForm["password"].value + " "
+            resultadoFormulario.textContent += myForm["number"].value + " "
+
+        })
+
+    </script>
+</body>
+</html>

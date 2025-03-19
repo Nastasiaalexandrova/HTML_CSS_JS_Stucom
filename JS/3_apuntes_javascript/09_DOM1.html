@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+</head>
+<body>
+    <h1 onclick="cambiarH1()">Soy el titulo principal</h1> <!--onclick - que cuando se haga clic se haga algo, llamara a funcion en js|| tambien ondoubleclick-->
+    <h2>Soy el titulo secundario</h2>
+    <h3>Soy un h3</h3>
+    <p>1</p>
+    <p>2</p>
+    <p id="parafo_3">3</p>
+    <p class="newBackground">4</p>
+    <p class="newBackground">5</p>
+    <div>
+        <h2>Estoy dentro del div</h2>
+        <p>Soy un parrafo dentro del div</p>
+    </div>
+
+    <script>
+
+        //SISTEMA 1
+
+        const h1 = document.querySelector("h1")    //acceder al html *querySelector devuelve 1 unico valor, *querySelectorAll devuelve multiples valores
+                                        //si le pido que seleccione p seleccionara solo la 1a
+        console.log(h1);        //esto obtiene el h1 
+        console.log(h1.textContent); //para obtener SOLO el contenido
+        // h1.textContent = "He cambiado el titulo <span style='color:red'>principal</span>"  //para cambiar contenidos
+        h1.innerHTML = "He cambiado el titulo <span style='color:red'>principal</span>" //para inyectar html
+
+        let ponteAzul = true
+        let cont = 0    //NO INICIAR DENTRO DE FUNCION, QUE SE REINICIAN CADA VEZ QUE SE CLICA
+
+        function cambiarH1(){   //la funcion se llama cuando se hace clic (onclick)
+            // alert("Has hecho clic en el h1")
+
+            // if(h1.style.backgroundColor=="darkblue" && h1.style.color=="white"){
+            //     h1.style.backgroundColor="white"
+            //     h1.style.color="black"   
+            // }else{
+            //     h1.style.backgroundColor="darkblue"
+            //     h1.style.color="white"
+            // }
+
+            // if(ponteAzul){
+            //     h1.style.backgroundColor="darkblue"
+            //     h1.style.color="white"
+            //     ponteAzul = false
+            // }else{
+            //     h1.style.background="white"
+            //     h1.style.color="black"
+            //     ponteAzul = true
+            // }
+            
+            if (cont==0){
+                h1.style.backgroundColor="darkblue"
+                h1.style.color="white"
+                cont=1
+            }else if(cont==1){
+                h1.style.backgroundColor="darkred"
+                h1.style.color="white"
+                cont=2
+            }else{
+                h1.style.backgroundColor="white"
+                h1.style.color="black"
+                cont=0
+            }
+        }
+
+        //SISTEMA 2
+        // const h2_bis = document.getElementsByTagName("h2")   //no recomendado, devuelve array de elementos, complica las cosas
+        const h2 = document.querySelector("h2") //primero se selecciona
+        h2.onclick = () => {    //equivale a etiqueta onclic en el html
+            h2.style.fontFamily = "Arial"   //luego le dices que haga algo
+            h2.style.fontSize = "48px"
+        } 
+
+        //SISTEMA 3
+        const h3 = document.querySelector("h3") //h3 es este nodo (por el nombre por el que se declara, nombre del nodo)
+        h3.addEventListener("click", () => {    //(el evento que queremos capturar, funcion()) la funcion puede tener un parametro o no
+            h2.innerText="He cambiado el h2 desde el h3"   //clic en h3 pero se cambia h2
+            h3.style.color="darkgreen"
+        })    
+
+        //Seleccion multiple
+        const parrafos = document.querySelectorAll("p")
+        // console.log(parrafos);
+        for(let i=0;i<parrafos.length;i++){ //itera sobre el array de nodos que da el querySelectorAll
+            parrafos[i].addEventListener("click", ()=>{
+                parrafos[i].style.display = "inline"
+                parrafos[i].style.border = "2px solid orange"
+            })  //parrafos[i] es uno de los nodos
+        }
+
+        const nb = document.querySelectorAll(".newBackground")  //aqui selectores de CSS
+        for(let i=0;i<nb.length;i++){
+            nb[i].addEventListener("mouseover", ()=>{
+                nb[i].style.display = "hidden"
+                nb[i].style.color = "transparent"
+            })
+        }
+
+    const div = document.querySelector("div")
+    div.addEventListener("mouseover", ()=>{
+        let codigo = "<p onclick='cambiarH1()'>Hemos machacado el div</p>"
+        codigo += "<p>Hasta pronto</p>"
+        div.innerHTML = codigo
+    })
+
+    </script>
+</body>
+</html>
