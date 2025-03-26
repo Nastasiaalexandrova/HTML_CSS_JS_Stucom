@@ -35,86 +35,133 @@ Recuerda la importancia comentar con detalle el código.
 
 //  })
 
-const products = document.querySelectorAll(".productes div"); // Recibimos los elementos de productos
-const cartElement = document.getElementById("carrito"); // Creamos la variable para una linea del carrito
-const totalElement = document.getElementById("preuFinal"); // Creamos la variable para mostrar el total
-let cart = []; // la lista del carrito
+// Shopping Cart Application
 
-// Добавляем обработчик событий для каждого фрукта
-products.forEach(product => {
-    product.addEventListener("click", function () {
-        const name = product.querySelector("p").textContent.split(":")[0].trim(); // Получаем название фрукта
-        const priceText = product.querySelector("p").textContent.split(":")[1].trim(); // Получаем цену
-        const price = parseFloat(priceText.replace(',', '.')); // Преобразуем цену в число
-        const unit = priceText.includes("€/kg") ? "kg" : "ud"; // Определяем единицу измерения
-
-        let quantity;
-        while (true) {
-            quantity = prompt(`¿Cuántos ${unit} de ${name} quieres?`); // Запрашиваем количество у пользователя
-            quantity = quantity.replace(',', '.'); // Заменяем запятую на точку для корректного парсинга
-
-            if (!/^\d+(\.\d+)?$/.test(quantity)) {
-                alert("Por favor, introduce un número válido.");
-                continue;
+// Wait for DOM to fully load before executing
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const productItems = document.querySelectorAll('.productes div');
+    const cartContainer = document.getElementById('carrito');
+    const totalPriceElement = document.getElementById('preuFinal');
+    
+    // Cart data storage
+    let cart = [];
+    
+    // Add click event to each product
+    productItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Extract product info
+            const productText = this.querySelector('p').textContent;
+            const [name, priceInfo] = productText.split(':').map(str => str.trim());
+            
+            const price = parseFloat(priceInfo.split('€')[0].replace(',', '.'));
+            const unit = priceInfo.includes('/kg') ? 'kg' : 'ud';
+            
+            // Get quantity from user
+            let quantity;
+            while (true) {
+                quantity = prompt(`¿Cuántos ${unit} de ${name} quieres?`);
+                
+                // Exit if user cancels
+                if (quantity === null) return;
+                
+                // Validate input
+                quantity = quantity.replace(',', '.');
+                if (!/^\d*\.?\d+$/.test(quantity)) {
+                    alert('Por favor, introduce un número válido');
+                    continue;
+                }
+                
+                quantity = parseFloat(quantity);
+                
+                // Validate for whole numbers if sold by unit
+                if (unit === 'ud' && !Number.isInteger(quantity)) {
+                    alert('Para unidades, introduce un número entero');
+                    continue;
+                }
+                
+                if (quantity > 0) break;
+                alert('La cantidad debe ser mayor que 0');
             }
             
-            quantity = parseFloat(quantity);
-            
-            if (unit === "ud" && !Number.isInteger(quantity)) {
-                alert("Para unidades enteras, por favor introduce un número entero.");
-                continue;
-            }
-            
-            if (quantity > 0) {
-                break;
-            } else {
-                alert("La cantidad debe ser mayor que 0.");
-            }
-        }
-
-        addToCart(name, quantity, price, unit); // Добавляем товар в корзину
+            // Add to cart
+            addToCart(name, quantity, price, unit);
+        });
     });
-});
-
-// La funccion para añadir items al carrito
-function addToCart(name, quantity, price, unit) {//con los siguientes argumentos
-    const existingItem = cart.find(item => item.name === name); // buscamos si el elemento ya existe en el carrito para no añadir la linea separada para el producto que ya existe
-    if (existingItem) { //si ya existe =>
-        existingItem.quantity += quantity; // => subimos la cantidad
-    } else {
-        cart.push({ name, quantity, price, unit }); // Si no añadimos la linea con el producto nuevo
-    }
-    updateCart(); // 
-}
-
-// La funccion para 
-function updateCart() {
-    cartElement.innerHTML = ""; // Очищаем содержимое корзины
-    let total = 0;
-    cart.forEach((item, index) => {
-        const itemTotal = (item.quantity * item.price).toFixed(2); // Рассчитываем стоимость товара
-        total += parseFloat(itemTotal); // Обновляем итоговую сумму
-
-        const cartItem = document.createElement("p"); // Создаем элемент для отображения товара в корзине
+    
+    // Add item to cart
+    function addToCart(name, quantity, price, unit) {
+        // Check if item already exists in cart
+        const existingIndex = cart.findIndex(item => item.name === name);
         
-        const deleteButton = document.createElement("i"); // Создаем иконку удаления
-        deleteButton.classList.add("fas", "fa-trash");
-        deleteButton.style.cursor = "pointer";
-        deleteButton.style.marginRight = "10px";
-        deleteButton.addEventListener("click", function () {
-            removeFromCart(index); // Добавляем обработчик удаления товара
+        if (existingIndex >= 0) {
+            // Update quantity if exists
+            cart[existingIndex].quantity += quantity;
+        } else {
+            // Add new item if doesn't exist
+            cart.push({
+                name,
+                quantity,
+                price,
+                unit
+            });
+        }
+        
+        updateCartDisplay();
+    }
+    
+    // Update cart UI
+    function updateCartDisplay() {
+        // Clear current cart display
+        cartContainer.innerHTML = '';
+        
+        let total = 0;
+        
+        // Add each cart item to display
+        cart.forEach((item, index) => {
+            const itemTotal = item.quantity * item.price;
+            total += itemTotal;
+            
+            // Create cart item element
+            const itemElement = document.createElement('div');
+            itemElement.className = 'cart-item';
+            
+            // Add delete button
+            const deleteBtn = document.createElement('i');
+            deleteBtn.className = 'fas fa-trash delete-btn';
+            deleteBtn.title = 'Eliminar producto';
+            deleteBtn.dataset.index = index;
+            
+            // Add item details
+            itemElement.appendChild(deleteBtn);
+            itemElement.innerHTML += `
+                ${item.name} ${item.quantity} ${item.unit} 
+                x ${item.price.toFixed(2)}€/${item.unit} 
+                = ${itemTotal.toFixed(2)}€
+            `;
+            
+            cartContainer.appendChild(itemElement);
         });
         
-        cartItem.appendChild(deleteButton); // Добавляем иконку удаления перед текстом
-        cartItem.innerHTML += `${item.name} ${item.quantity} ${item.unit} x ${item.price.toFixed(2)}€/ ${item.unit} = ${itemTotal}€ `;
+        // Update total price
+        totalPriceElement.textContent = total.toFixed(2) + '€';
         
-        cartElement.appendChild(cartItem); // Добавляем товар в корзину
-    });
-    totalElement.textContent = total.toFixed(2) + "€"; // Обновляем итоговую сумму
-}
-
-// Функция удаления товара из корзины
-function removeFromCart(index) {
-    cart.splice(index, 1); // Удаляем товар по индексу
-    updateCart(); // Обновляем корзину
-}
+        // Add event listeners to delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const index = parseInt(this.dataset.index);
+                removeFromCart(index);
+            });
+        });
+    }
+    
+    // Remove item from cart
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartDisplay();
+    }
+    
+    // Initialize cart display
+    updateCartDisplay();
+});
